@@ -38,16 +38,20 @@ function gameBoard() {
   };
 
   let checkRowFull = (eltRow) => eltRow != undefined;
+  let checkRowX = (eltRow) => eltRow == "X";
+  let checkRowO = (eltRow) => eltRow == "O";
 
   let endGame = () => {
     let countRow = 0;
     for (let i = 0; i < 3; i++) {
       //check if board is full
+      if (countRow) return "full";
+
       if (board[i].every(checkRowFull)) {
         ++countRow;
       }
 
-      let holder;
+      //check if the column has the same value
       for (let j = 0; j < array.length; j++) {
         if (
           board[j][i] == board[j][i + 3] &&
@@ -56,15 +60,17 @@ function gameBoard() {
         ) {
           return board[j][i];
         }
-        return;
       }
 
+      //check if the full rtow has X
+      if (board[i].every(checkRowX)) return "X";
 
-      
+      //check if the full rtow has O
+      if (board[i].every(checkRowO)) return "O";
     }
   };
 
-  return { getSquareId, fillSquare, drawBoard };
+  return { getSquareId, fillSquare, drawBoard ,endGame};
 }
 
 function player(name, symbol) {
@@ -85,4 +91,12 @@ let game = () => {
 
   let playerX = player("PlayerX", "X");
   let playerO = player("PlayerO", "O");
+
+  gb.drawBoard();
+
+  while(!gb.endGame()){
+
+  }
 };
+
+game();
