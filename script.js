@@ -7,39 +7,65 @@ function gameBoard() {
 
   let squareId;
 
-  Object.seal(board);
-  let divContainer = document.getElementById("container");
   let drawBoard = () => {
+    Object.seal(board);
+    let divContainer = document.getElementById("container");
     for (let i = 0; i < 9; i++) {
       let boardSquare = document.createElement("div");
-      //   boardSquare.style.height = `20px`;
-      //   boardSquare.style.width = `20px`;
+
       boardSquare.style.borderWidth = "1px";
       boardSquare.style.borderStyle = "solid";
       boardSquare.style.borderColor = "black";
       boardSquare.style.borderCollapse = "collapse";
       boardSquare.style.alignContent = "stretch";
+      boardSquare.style.textAlign = "center";
+      boardSquare.style.lineHeight = 6;
       boardSquare.id = i;
       boardSquare.addEventListener("click", setSquareId.bind(this));
 
-      // boardSquare.addEventListener("click", function(){console.log(this)});
       divContainer.appendChild(boardSquare);
     }
   };
   let setSquareId = (that) => {
-    console.log("inside");
     this.squareId = that.target.id;
-    console.log(this.squareId);
   };
 
   let getSquareId = () => this.squareId;
 
-  drawBoard();
-  console.log("testttttt");
-  return { getSquareId };
-}
+  let fillSquare = (eltId, symbol) => {
+    let elt = document.getElementById(eltId);
+    elt.innerHTML = symbol;
+  };
 
-let gb = gameBoard();
+  let checkRowFull = (eltRow) => eltRow != undefined;
+
+  let endGame = () => {
+    let countRow = 0;
+    for (let i = 0; i < 3; i++) {
+      //check if board is full
+      if (board[i].every(checkRowFull)) {
+        ++countRow;
+      }
+
+      let holder;
+      for (let j = 0; j < array.length; j++) {
+        if (
+          board[j][i] == board[j][i + 3] &&
+          board[j][i] == board[j][i + 6] &&
+          board[j][i] != undefined
+        ) {
+          return board[j][i];
+        }
+        return;
+      }
+
+
+      
+    }
+  };
+
+  return { getSquareId, fillSquare, drawBoard };
+}
 
 function player(name, symbol) {
   let nameplayer = name;
@@ -48,11 +74,15 @@ function player(name, symbol) {
 
   let getBoardSquareId = () => {
     this.idSquare = gb.getSquareId();
-    console.log(this.idSquare);
   };
   return {
     getBoardSquareId,
   };
 }
 
-let p = player("gareen", "X");
+let game = () => {
+  let gb = gameBoard();
+
+  let playerX = player("PlayerX", "X");
+  let playerO = player("PlayerO", "O");
+};
